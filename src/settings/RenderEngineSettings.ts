@@ -5,7 +5,7 @@ export class RenderEngineSettings {
     public static readonly LINE_THICKNESS: number = 2;
     public static readonly lineActiveColor: string = Settings.PRIMARY_COLOR;
     public static readonly defaultLineColor: string = '#ffffff';
-    public static readonly CROSS_HAIR_LINE_COLOR: string = '#ffffff';
+    public static readonly CROSS_HAIR_LINE_COLOR: string = '#0fffe9';
     public static readonly crossHairPadding: number = 25;
     public static readonly anchorSize: ISize = {
         width: Settings.RESIZE_HANDLE_DIMENSION_PX,
@@ -26,7 +26,7 @@ export class RenderEngineSettings {
     public static readonly ACTIVE_ANCHOR_COLOR: string = Settings.SECONDARY_COLOR;
     public static readonly INACTIVE_ANCHOR_COLOR: string = Settings.DARK_THEME_SECOND_COLOR;
 
-    public static readonly DEFAULT_LINE_COLOR: string = '#ffffff';
+    public static readonly DEFAULT_LINE_COLOR: string = '#0fffe9';
     public static readonly ACTIVE_LINE_COLOR: string = Settings.PRIMARY_COLOR;
     public static readonly INACTIVE_LINE_COLOR: string = '#ffffff';
 }
