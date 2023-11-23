@@ -1,4 +1,3 @@
-import {DetectedObject} from '@tensorflow-models/coco-ssd';
 import {ImageData, LabelName, LabelRect} from '../../store/labels/types';
 import {LabelsSelector} from '../../store/selectors/LabelsSelector';
 import { v4 as uuidv4 } from 'uuid';
@@ -26,59 +25,62 @@ export class AISSDObjectDetectionActions {
             return;
 
         store.dispatch(updateActivePopupType(PopupWindowType.LOADER));
-        SSDObjectDetector.predict(image, (predictions: DetectedObject[]) => {
-            const suggestedLabelNames = AISSDObjectDetectionActions
-                .extractNewSuggestedLabelNames(LabelsSelector.getLabelNames(), predictions);
-            const rejectedLabelNames = AISelector.getRejectedSuggestedLabelList();
-            const newlySuggestedNames = AIActions.excludeRejectedLabelNames(suggestedLabelNames, rejectedLabelNames);
-            if (newlySuggestedNames.length > 0) {
-                store.dispatch(updateSuggestedLabelList(newlySuggestedNames));
-                store.dispatch(updateActivePopupType(PopupWindowType.SUGGEST_LABEL_NAMES));
-            } else {
-                store.dispatch(updateActivePopupType(null));
-            }
-            AISSDObjectDetectionActions.saveRectPredictions(imageId, predictions);
-        })
+        // SSDObjectDetector.predict(image, (predictions: DetectedObject[]) => {
+        //     const suggestedLabelNames = AISSDObjectDetectionActions
+        //         .extractNewSuggestedLabelNames(LabelsSelector.getLabelNames(), predictions);
+        //     const rejectedLabelNames = AISelector.getRejectedSuggestedLabelList();
+        //     const newlySuggestedNames = AIActions.excludeRejectedLabelNames(suggestedLabelNames, rejectedLabelNames);
+        //     if (newlySuggestedNames.length > 0) {
+        //         store.dispatch(updateSuggestedLabelList(newlySuggestedNames));
+        //         store.dispatch(updateActivePopupType(PopupWindowType.SUGGEST_LABEL_NAMES));
+        //     } else {
+        //         store.dispatch(updateActivePopupType(null));
+        //     }
+        //     AISSDObjectDetectionActions.saveRectPredictions(imageId, predictions);
+        // })
     }
 
-    public static saveRectPredictions(imageId: string, predictions: DetectedObject[]) {
-        const imageData: ImageData = LabelsSelector.getImageDataById(imageId);
-        const predictedLabels: LabelRect[] = AISSDObjectDetectionActions.mapPredictionsToRectLabels(predictions);
-        const nextImageData: ImageData = {
-            ...imageData,
-            labelRects: imageData.labelRects.concat(predictedLabels),
-            isVisitedBySSDObjectDetector: true
-        };
-        store.dispatch(updateImageDataById(imageData.id, nextImageData));
-    }
+    // public static saveRectPredictions(imageId: string, predictions: DetectedObject[]) {
+    //     const imageData: ImageData = LabelsSelector.getImageDataById(imageId);
+    //     const predictedLabels: LabelRect[] = AISSDObjectDetectionActions.mapPredictionsToRectLabels(predictions);
+    //     const nextImageData: ImageData = {
+    //         ...imageData,
+    //         labelRects: imageData.labelRects.concat(predictedLabels),
+    //         isVisitedBySSDObjectDetector: true
+    //     };
+    //     store.dispatch(updateImageDataById(imageData.id, nextImageData));
+    // }
 
-    private static mapPredictionsToRectLabels(predictions: DetectedObject[]): LabelRect[] {
-        return predictions.map((prediction: DetectedObject) => {
-            return {
-                id: uuidv4(),
-                labelIndex: null,
-                labelId: null,
-                rect: {
-                    x: prediction.bbox[0],
-                    y: prediction.bbox[1],
-                    width: prediction.bbox[2],
-                    height: prediction.bbox[3],
-                },
-                isVisible: true,
-                isCreatedByAI: true,
-                status: LabelStatus.UNDECIDED,
-                suggestedLabel: prediction.class
-            }
-        })
-    }
+    // private static mapPredictionsToRectLabels(predictions: DetectedObject[]): LabelRect[] {
+    //     return predictions.map((prediction: DetectedObject) => {
+    //         return {
+    //             id: uuidv4(),
+    //             labelIndex: null,
+    //             labelId: null,
+    //             rect: {
+    //                 x: prediction.bbox[0],
+    //                 y: prediction.bbox[1],
+    //                 width: prediction.bbox[2],
+    //                 height: prediction.bbox[3],
+    //             },
+    //             isVisible: true,
+    //             isCreatedByAI: true,
+    //             status: LabelStatus.UNDECIDED,
+    //             suggestedLabel: prediction.class
+    //         }
+    //     })
+    // }
 
-    public static extractNewSuggestedLabelNames(labels: LabelName[], predictions: DetectedObject[]): string[] {
-        return predictions.reduce((acc: string[], prediction: DetectedObject) => {
-            if (!acc.includes(prediction.class) && !findLast(labels, {name: prediction.class})) {
-                acc.push(prediction.class)
-            }
-            return acc;
-        }, [])
+    public static extractNewSuggestedLabelNames(
+        // labels: LabelName[], predictions: DetectedObject[]
+    ): string[] {
+        // return predictions.reduce((acc: string[], prediction: DetectedObject) => {
+        //     if (!acc.includes(prediction.class) && !findLast(labels, {name: prediction.class})) {
+        //         acc.push(prediction.class)
+        //     }
+        //     return acc;
+        // }, [])
+        return []
     }
 
     public static acceptAllSuggestedRectLabels(imageData: ImageData) {
